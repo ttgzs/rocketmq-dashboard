@@ -17,7 +17,8 @@
 
 FROM registry.cn-hangzhou.aliyuncs.com/dockerhub_mirror/java:1.8-full
 VOLUME /tmp
-ADD rocketmq-dashboard-*.jar rocketmq-dashboard.jar
+## ADD rocketmq-dashboard-*.jar rocketmq-dashboard.jar
+ADD target/rocketmq-dashboard-1.0.1-SNAPSHOT.jar
 RUN sh -c 'touch /rocketmq-dashboard.jar'
 ENV JAVA_OPTS=""
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar /rocketmq-dashboard.jar" ]
