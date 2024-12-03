@@ -1,0 +1,44 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+name: Maven Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+    - name: Build with Maven
+      run: mvn clean package -Dmaven.test.skip=true
+    - name: Build with Docker
+      run: docker builder -f ./src/main/docke/Dockerfile -t harbor.tongjijs.com/library/apache/rocketmq-dashboard:2.0 .   
+ 
+    - name: login tjjs     
+      uses: docker/login-action@v3.2.0
+      with:
+        registry: ${{ secrets.TJJS_HARBOR_HOST }}
+        Username: ${{ secrets.TJJS_HARBOR_USERNAME }}
+        password: ${{ secrets.TJJS_HARBOR_PWD }}
+        logout: false
+    - name: Push docker image 
+      run: docker push harbor.tongjijs.com/library/apache/rocketmq-dashboard:2.0
+      
+
+   
