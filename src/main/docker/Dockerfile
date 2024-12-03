@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-FROM java:8
+FROM registry.cn-hangzhou.aliyuncs.com/dockerhub_mirror/java:1.8-full
 VOLUME /tmp
 ADD rocketmq-dashboard-*.jar rocketmq-dashboard.jar
 RUN sh -c 'touch /rocketmq-dashboard.jar'
