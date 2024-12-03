@@ -38,7 +38,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -Dmaven.test.skip=true
     - name: Build with Docker
-      run: docker builder -f ./src/main/docke/Dockerfile -t harbor.tongjijs.com/library/apache/rocketmq-dashboard:2.0 .   
+      run: docker build -f ./src/main/docke/Dockerfile -t harbor.tongjijs.com/library/apache/rocketmq-dashboard:2.0 .   
  
     - name: login tjjs     
       uses: docker/login-action@v3.2.0
